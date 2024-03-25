@@ -25,7 +25,7 @@ class EvidenceClient:
         r = self.s.get(self.baseurl + "data/manifest.json")
         r.raise_for_status()
         self.datasets = {}
-        for _, values in r.json()['renderedFiles']:
+        for _, values in r.json()['renderedFiles'].items():
             for value in values:
                 self.datasets[value.split('/')[-1].replace('.parquet', '')] = value
 
@@ -36,7 +36,7 @@ class EvidenceClient:
         if dataset not in self.datasets:
             raise Exception(f'Dataset {dataset} does not exist!')
 
-        r = self.s.get(self.datasets[dataset])
+        r = self.s.get(self.baseurl + self.datasets[dataset].replace('static/', ''))
         r.raise_for_status()
         stream = BytesIO(r.content)
         df = pd.read_parquet(stream, engine='pyarrow')
