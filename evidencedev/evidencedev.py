@@ -1,7 +1,7 @@
 import pandas as pd
 import requests
 from io import BytesIO
-
+from requests.exceptions import JSONDecodeError
 
 __title__ = "evidencedev"
 __version__ = "0.1.0"
@@ -24,8 +24,12 @@ class EvidenceClient:
 
         r = self.s.get(self.baseurl + "data/manifest.json")
         r.raise_for_status()
+        try:
+            manifest = r.json()['renderedFiles']
+        except JSONDecodeError:
+            raise Exception('Invalid manifest! Please check your authentication')
         self.datasets = {}
-        for _, values in r.json()['renderedFiles'].items():
+        for _, values in manifest.items():
             for value in values:
                 self.datasets[value.split('/')[-1].replace('.parquet', '')] = value
 
