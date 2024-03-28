@@ -37,7 +37,5 @@ jobs:
           file: dist/*.whl
           file_glob: true
           tag: ${{ github.ref }}
-      - name: Publish distribution 📦 to Test PyPI
-        uses: pypa/gh-action-pypi-publish@v1
       - name: Publish distribution 📦 to PyPI
         uses: pypa/gh-action-pypi-publish@v1
