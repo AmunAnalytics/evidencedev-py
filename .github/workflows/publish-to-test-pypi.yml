@@ -38,5 +38,6 @@ jobs:
           file: dist/*.whl
           file_glob: true
           tag: ${{ github.ref }}
+          overwrite: true
       - name: Publish distribution 📦 to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
